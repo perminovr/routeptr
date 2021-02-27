@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ ! -f build/Makefile ]; then
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	TOOLCHAIN=/home/roman/data-linux/raspberry/cross-pi-gcc/bin
+	# export ENVCXXFLAGS="-g -O0 -DRDEBUG"
+	export ENVCXXFLAGS="-O2"
+	export RASPBIAN_ROOTFS=/home/roman/data-linux/raspberry/rootfs
+	export PATH=${TOOLCHAIN}:$PATH
+
+	cmake -DCMAKE_TOOLCHAIN_FILE=../rpi.cmake ..
+	cd -
+fi
+
+cd build
+make -j 3
+cp -f routeptr ../
